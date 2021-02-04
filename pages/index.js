@@ -102,7 +102,7 @@ export const FormInput = styled.input`
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
-  color: ${colors.lightGray};
+  color: ${colors.black};
   height: 40px;
   margin-left: 32px;
   padding-left: 8px;
