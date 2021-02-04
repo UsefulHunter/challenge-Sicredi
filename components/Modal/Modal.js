@@ -1,26 +1,26 @@
-import styled from "styled-components";
-import { colors } from "../../utils/colors";
+import styled from "styled-components"
+import { colors } from "../../utils/colors"
 
-import React, { useState, useImperativeHandle, forwardRef } from "react";
-import CloseSVG from "../SVG/CloseSVG";
+import React, { useState, useImperativeHandle, forwardRef } from "react"
+import CloseSVG from "../SVG/CloseSVG"
 
 const Modal = forwardRef((props, ref) => {
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState(false)
 
   useImperativeHandle(ref, () => {
     return {
       openModal: () => open(),
       close: () => close(),
-    };
-  });
+    }
+  })
 
   const open = () => {
-    setDisplay(true);
-  };
+    setDisplay(true)
+  }
 
   const close = () => {
-    setDisplay(false);
-  };
+    setDisplay(false)
+  }
 
   if (display) {
     return (
@@ -33,10 +33,10 @@ const Modal = forwardRef((props, ref) => {
           {props.children}
         </ModalBox>
       </Wrapper>
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -44,7 +44,7 @@ export const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-`;
+`
 export const Backdrop = styled.div`
   position: fixed;
   top: 0;
@@ -53,7 +53,7 @@ export const Backdrop = styled.div`
   right: 0;
   z-index: 100;
   background-color: rgba(0, 0, 0, 0.5);
-`;
+`
 export const ModalBox = styled.div`
   position: relative;
   top: 50%;
@@ -65,13 +65,13 @@ export const ModalBox = styled.div`
   overflow-y: auto;
   background-color: ${colors.white};
   z-index: 101;
-`;
+`
 export const CloseIcon = styled.div`
   position: fixed;
   top: 16px;
   right: 16px;
   z-index: 102;
   cursor: pointer;
-`;
+`
 
-export default Modal;
+export default Modal

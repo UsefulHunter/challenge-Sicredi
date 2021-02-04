@@ -135,7 +135,7 @@ const SpinnerWrapper = styled.div`
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  height: 10;
 `
 
 export default Home

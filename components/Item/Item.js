@@ -59,6 +59,7 @@ const ItemSingle = props => {
       <ItemTitle id="itemTitle" onClick={handleDetails}>
         {props.data.name}
       </ItemTitle>
+      <i></i>
       <ItemIconContainer>
         <Icon onClick={openDialog}>
           <TrashSVG />
@@ -107,11 +108,16 @@ const ItemSingle = props => {
 export const Item = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 0 32px 0;
+  margin: 24px;
   border: 1px solid black;
   border-radius: 4px;
+  padding: 10px;
+  width: 20%;
   ::last-child {
     flex-grow: 10;
+  }
+  &:hover {
+    opacity: 0.6;
   }
 
   @media (max-width: 768px) {
@@ -133,6 +139,7 @@ export const ItemTitle = styled.h3`
   font-size: 24px;
   line-height: 18px;
   cursor: pointer;
+  text-align: center;
   color: ${colors.mediumBlack};
 `
 
