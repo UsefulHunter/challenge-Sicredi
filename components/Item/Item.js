@@ -1,50 +1,62 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { colors } from "../../utils/colors";
-import PenSVG from "../SVG/PenSVG";
-import TrashSVG from "../SVG/TrashSVG";
-import Modal from "../Modal/Modal";
-import Dialog from "../Dialog/Dialog";
-import Feedback from "../Feedback/Feedback";
+import React, { useState, useRef, useEffect } from "react"
+import styled from "styled-components"
+import { colors } from "../../utils/colors"
+import PenSVG from "../SVG/PenSVG"
+import TrashSVG from "../SVG/TrashSVG"
+import Modal from "../Modal/Modal"
+import Dialog from "../Dialog/Dialog"
+import Feedback from "../Feedback/Feedback"
+import { api } from "../../services/api"
 
-const ItemSingle = (props) => {
-  const modalRef = useRef();
-  const dialogRef = useRef();
-  const feedbackRef = useRef();
+import { useRouter } from "next/router"
+
+const ItemSingle = props => {
+  const router = useRouter()
+  const modalRef = useRef()
+  const dialogRef = useRef()
+  const feedbackRef = useRef()
 
   const openModal = () => {
-    modalRef.current.openModal();
-  };
+    modalRef.current.openModal()
+  }
   const openDialog = () => {
-    dialogRef.current.openDialog();
-  };
+    dialogRef.current.openDialog()
+  }
   const closeDialog = () => {
-    dialogRef.current.close();
-  };
+    dialogRef.current.close()
+  }
   const openFeedback = () => {
-    dialogRef.current.close();
-    feedbackRef.current.openFeedback();
-  };
+    dialogRef.current.close()
+    feedbackRef.current.openFeedback()
+  }
 
   const handleDelete = async () => {
     try {
-      await api.delete(`dragon/${props.data.id}`);
-      openFeedback();
+      await api.delete(`dragon/${props.data.id}`)
+      openFeedback()
     } catch (error) {
       if (error.response) {
-        console.error(error.response);
+        console.error(error.response)
       }
     }
-  };
-  const handleNavigate = (id) => {
-    navigate("/edit", {
-      state: { id },
-    });
-  };
+  }
+  const handleNavigate = id => {
+    console.log(id)
+    router.push({
+      pathname: "/add",
+      query: { id, isEdit: true },
+    })
+  }
+  const handleDetails = id => {
+    router.push({
+      pathname: "details",
+      query: { id },
+    })
+  }
 
   return (
     <Item>
-      <ItemTitle id="itemTitle" onClick={openModal}>
+      <ItemTitle id="itemTitle" onClick={() => handleDetails(props.data.id)}>
         {props.data.name}
       </ItemTitle>
       <ItemIconContainer>
@@ -60,17 +72,7 @@ const ItemSingle = (props) => {
           <ModalImage src={props.data.url} />
           <ModalInfo>
             <ModalTitle>{props.data.name}</ModalTitle>
-            {/* <ItemText>{props.data.job_role}</ItemText> */}
-            {/* <ItemSubtitle>Idade</ItemSubtitle>
-            <ItemText>{primaryAge.year}</ItemText>
-            <ItemSubtitle>Tempo de empresa</ItemSubtitle>
-            <ItemText>
-              {secondaryAge.year === 0
-                ? `${secondaryAge.month} mes(es)`
-                : `${secondaryAge.year} ano(s), ${secondaryAge.month} mes(es)`}
-            </ItemText> */}
-            {/* <ItemSubtitle>Projetos que participou</ItemSubtitle>
-            <ItemText>{props.data.project}</ItemText> */}
+
             <ModalIconContainer>
               <Icon id="deleteIcon" onClick={openDialog}>
                 <TrashSVG />
@@ -99,8 +101,8 @@ const ItemSingle = (props) => {
         <ItemText>Dragão excluído com sucesso!</ItemText>
       </Feedback>
     </Item>
-  );
-};
+  )
+}
 
 export const Item = styled.div`
   display: flex;
@@ -116,25 +118,26 @@ export const Item = styled.div`
     width: 100%;
     align-items: center;
   }
-`;
+`
 export const ItemImg = styled.img`
   object-fit: none;
   object-position: center;
   height: 350px;
   width: 350px;
-`;
+`
 
 export const ItemTitle = styled.h3`
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 18px;
+  cursor: pointer;
   color: ${colors.mediumBlack};
-`;
+`
 
 export const ItemSubtitle = styled.span`
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -142,23 +145,23 @@ export const ItemSubtitle = styled.span`
   color: ${colors.mediumBlack};
   margin-top: 24px;
   margin-bottom: 10px;
-`;
+`
 
 export const ItemText = styled.span`
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
-`;
+`
 
 export const ItemIconContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   margin-left: 5px;
-`;
+`
 
 export const ModalIconContainer = styled.div`
   display: flex;
@@ -167,28 +170,28 @@ export const ModalIconContainer = styled.div`
   justify-content: flex-start;
   margin-left: 5px;
   margin-top: auto;
-`;
+`
 
 export const Icon = styled.div`
   margin-right: 16px;
   cursor: pointer;
-`;
+`
 
 export const ModalWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 100%;
-`;
+`
 
 export const ModalImage = styled.img`
   width: 50%;
-`;
+`
 export const ModalInfo = styled.div`
   display: flex;
   flex-flow: column wrap;
   padding: 32px 0 28px 30px;
-`;
+`
 export const ModalTitle = styled.h1`
   font-family: Montserrat;
   font-style: normal;
@@ -197,19 +200,19 @@ export const ModalTitle = styled.h1`
   line-height: 36px;
   margin-top: 0;
   margin-bottom: 10px;
-`;
+`
 
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin-top: auto;
-`;
+`
 
 export const DialogButtonPrimary = styled.button`
   background-color: ${colors.mediumBlack};
   color: ${colors.white};
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -217,12 +220,12 @@ export const DialogButtonPrimary = styled.button`
   height: 40px;
   padding: 8px 16px;
   width: 30%;
-`;
+`
 
 export const DialogButtonSecondary = styled.button`
   background-color: ${colors.white};
   color: #212121;
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -234,6 +237,6 @@ export const DialogButtonSecondary = styled.button`
   margin-right: 24px;
   padding: 8px 16px;
   width: 30%;
-`;
+`
 
-export default ItemSingle;
+export default ItemSingle

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import Head from "next/head"
 import { api } from "../services/api"
 import { useRouter } from "next/router"
@@ -6,27 +6,60 @@ import styled from "styled-components"
 import { colors } from "../utils/colors"
 import Label from "../components/Label/Label"
 import Input from "../components/Input/Input"
-import axios from "axios"
+import ArrowBackSVG from "../components/SVG/ArrowBackSVG"
 
-export default function Add({ isEditing }) {
+export default function Add() {
   const router = useRouter()
   const [name, setName] = useState("")
   const [type, setType] = useState("")
   const [histories, setHistories] = useState([])
+  const { id, isEdit } = router.query
+
+  useEffect(() => {
+    const verifyEdit = async () => {
+      if (isEdit) {
+        try {
+          let res = await api.get(`/dragon/${id}`)
+          setName(response.data.name)
+          setType(res.data.type)
+          setHistories(res.data.histories)
+        } catch (error) {
+          if (error.response) {
+            console.log("Error: ", error.response)
+          }
+        }
+      }
+    }
+    verifyEdit()
+  }, [id])
 
   const onSubmit = async event => {
     event.preventDefault()
-
-    try {
-      await api.post("/dragon", {
-        name,
-        type,
-        histories,
-      })
-      router.push("/main")
-    } catch (error) {
-      if (error.response) {
-        console.error("error.response: ", error.response)
+    if (isEdit) {
+      try {
+        await api.put(`/dragon/${id}`, {
+          name,
+          type,
+          histories,
+        })
+        router.push("/main")
+      } catch (error) {
+        if (error.response) {
+          console.error("error.response: ", error.response)
+        }
+      }
+    } else {
+      try {
+        await api.post("/dragon", {
+          name,
+          type,
+          histories,
+        })
+        router.push("/main")
+      } catch (error) {
+        if (error.response) {
+          console.error("error.response: ", error.response)
+        }
       }
     }
   }
@@ -34,12 +67,19 @@ export default function Add({ isEditing }) {
   return (
     <Container>
       <Head>
-        <title>{isEditing ? "Editar" : "Adicionar"}</title>
+        <title>{isEdit ? "Editar" : "Adicionar"}</title>
       </Head>
       <ContentWrapper>
         <FormContainer onSubmit={onSubmit}>
           <TitleContainer>
-            <Title>{isEditing ? "Editar Dragão" : "Adicionar Dragão"}</Title>
+            <Icon
+              onClick={() => {
+                router.push("/main")
+              }}
+            >
+              <ArrowBackSVG />
+            </Icon>
+            <Title>{isEdit ? "Editar Dragão" : "Adicionar Dragão"}</Title>
           </TitleContainer>
 
           <InputRow>
@@ -86,17 +126,17 @@ export default function Add({ isEditing }) {
   )
 }
 
-export const Container = styled.div`
+const Container = styled.div`
   padding: 24px 32px 32px 32px;
 `
-export const Text = styled.span`
+const Text = styled.span`
   font-family: Montserrat;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
 `
-export const TitleContainer = styled.div`
+const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -109,7 +149,7 @@ export const TitleContainer = styled.div`
     width: 100%;
   }
 `
-export const Title = styled.h1`
+const Title = styled.h1`
   font-family: Montserrat;
   font-style: normal;
   font-weight: 600;
@@ -117,7 +157,7 @@ export const Title = styled.h1`
   line-height: 36px;
   color: ${colors.mediumBlack};
 `
-export const ContentWrapper = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,11 +167,11 @@ export const ContentWrapper = styled.div`
     width: 100%;
   }
 `
-export const FormContainer = styled.form`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
 `
-export const InputRow = styled.div`
+const InputRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -143,7 +183,7 @@ export const InputRow = styled.div`
     width: 100%;
   }
 `
-export const InputItem = styled.div`
+const InputItem = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 32px;
@@ -153,7 +193,7 @@ export const InputItem = styled.div`
     margin-left: 0;
   }
 `
-export const FormButton = styled.button`
+const FormButton = styled.button`
   background-color: ${colors.mediumBlack};
   color: ${colors.white};
   font-family: Montserrat;
@@ -171,7 +211,7 @@ export const FormButton = styled.button`
     width: 100%;
   }
 `
-export const Icon = styled.div`
+const Icon = styled.div`
   margin-right: 16px;
   cursor: pointer;
 `

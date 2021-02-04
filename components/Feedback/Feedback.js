@@ -1,35 +1,35 @@
-import React, { useState, useImperativeHandle, forwardRef } from "react";
-import { useRouter } from "next/router";
-import CloseSVG from "../SVG/CloseSVG";
-import { Wrapper, Backdrop, CloseIcon } from "../Modal/Modal";
+import React, { useState, useImperativeHandle, forwardRef } from "react"
+import { useRouter } from "next/router"
+import CloseSVG from "../SVG/CloseSVG"
+import { Wrapper, Backdrop, CloseIcon } from "../Modal/Modal"
 
-import styled from "styled-components";
-import { colors } from "../../utils/colors";
+import styled from "styled-components"
+import { colors } from "../../utils/colors"
 
 const Feedback = forwardRef((props, ref) => {
-  const router = useRouter();
-  const [display, setDisplay] = useState(false);
+  const router = useRouter()
+  const [display, setDisplay] = useState(false)
 
   useImperativeHandle(ref, () => {
     return {
       openFeedback: () => open(),
       close: () => close(),
-    };
-  });
+    }
+  })
 
   const open = () => {
-    setDisplay(true);
-  };
+    setDisplay(true)
+  }
 
   const close = () => {
-    console.log(window.location);
-    setDisplay(false);
-    if (window.location.pathname === "/Home") {
-      document.location.reload();
+    console.log(window.location)
+    setDisplay(false)
+    if (window.location.pathname === "/main") {
+      document.location.reload()
     } else {
-      router.push("/Home");
+      router.push("/main")
     }
-  };
+  }
 
   if (display) {
     return (
@@ -42,10 +42,10 @@ const Feedback = forwardRef((props, ref) => {
           {props.children}
         </FeedbackBox>
       </Wrapper>
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 export const FeedbackBox = styled.div`
   position: relative;
@@ -61,6 +61,6 @@ export const FeedbackBox = styled.div`
 
   display: flex;
   flex-direction: column;
-`;
+`
 
-export default Feedback;
+export default Feedback
