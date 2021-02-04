@@ -1,26 +1,26 @@
-import React, { useState, useImperativeHandle, forwardRef } from "react";
-import styled from "styled-components";
-import { colors } from "../../utils/colors";
+import React, { useState, useImperativeHandle, forwardRef } from "react"
+import styled from "styled-components"
+import { colors } from "../../utils/colors"
 
-import { Wrapper, Backdrop } from "../Modal/Modal";
+import { Wrapper, Backdrop } from "../Modal/Modal"
 
 const Dialog = forwardRef((props, ref) => {
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState(false)
 
   useImperativeHandle(ref, () => {
     return {
       openDialog: () => open(),
       close: () => close(),
-    };
-  });
+    }
+  })
 
   const open = () => {
-    setDisplay(true);
-  };
+    setDisplay(true)
+  }
 
   const close = () => {
-    setDisplay(false);
-  };
+    setDisplay(false)
+  }
 
   if (display) {
     return (
@@ -28,10 +28,10 @@ const Dialog = forwardRef((props, ref) => {
         <Backdrop onClick={close} />
         <DialogBox>{props.children}</DialogBox>
       </Wrapper>
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 export const DialogBox = styled.div`
   position: relative;
@@ -46,6 +46,6 @@ export const DialogBox = styled.div`
   display: flex;
   flex-direction: column;
   padding: 32px;
-`;
+`
 
-export default Dialog;
+export default Dialog

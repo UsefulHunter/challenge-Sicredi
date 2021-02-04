@@ -117,7 +117,7 @@ export const Item = styled.div`
     flex-grow: 10;
   }
   &:hover {
-    opacity: 0.6;
+    background-color: #9e9e9e;
   }
 
   @media (max-width: 768px) {
