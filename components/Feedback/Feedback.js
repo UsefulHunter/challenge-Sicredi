@@ -22,10 +22,8 @@ const Feedback = forwardRef((props, ref) => {
   }
 
   const close = () => {
-    console.log(window.location)
     setDisplay(false)
     if (window.location.pathname === "/main") {
-      document.location.reload()
     } else {
       router.push("/main")
     }

@@ -31,7 +31,6 @@ export default function Details() {
   }, [id])
 
   const handleNavigate = () => {
-    console.log(id)
     router.push({
       pathname: "/add",
       query: { id, isEdit: true },
@@ -100,6 +99,7 @@ const TitleContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   margin-left: 32px;
+  width: 75%;
 
   @media (max-width: 768px) {
     margin-right: 0;
@@ -114,10 +114,10 @@ const Icon = styled.div`
 const Button = styled.button`
   background-color: ${colors.mediumBlack};
   color: ${colors.white};
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   height: 40px;
   padding: 8px 16px;

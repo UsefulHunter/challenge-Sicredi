@@ -33,6 +33,7 @@ const ItemSingle = props => {
   const handleDelete = async () => {
     try {
       await api.delete(`dragon/${props.data.id}`)
+      props.onHandleDelete(props.data.id)
       openFeedback()
     } catch (error) {
       if (error.response) {
@@ -40,30 +41,29 @@ const ItemSingle = props => {
       }
     }
   }
-  const handleNavigate = id => {
-    console.log(id)
+  const handleNavigate = () => {
     router.push({
       pathname: "/add",
-      query: { id, isEdit: true },
+      query: { id: props.data.id, isEdit: true },
     })
   }
-  const handleDetails = id => {
+  const handleDetails = () => {
     router.push({
       pathname: "details",
-      query: { id },
+      query: { id: props.data.id },
     })
   }
 
   return (
     <Item>
-      <ItemTitle id="itemTitle" onClick={() => handleDetails(props.data.id)}>
+      <ItemTitle id="itemTitle" onClick={handleDetails}>
         {props.data.name}
       </ItemTitle>
       <ItemIconContainer>
         <Icon onClick={openDialog}>
           <TrashSVG />
         </Icon>
-        <Icon onClick={() => handleNavigate(props.data.id)}>
+        <Icon onClick={handleNavigate}>
           <PenSVG />
         </Icon>
       </ItemIconContainer>

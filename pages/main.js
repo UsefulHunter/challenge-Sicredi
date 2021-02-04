@@ -5,14 +5,16 @@ import ItemSingle from "../components/Item/Item"
 
 import styled from "styled-components"
 import { colors } from "../utils/colors"
-
+import { Spinner } from "../components/Spinner/Spinner"
 const Home = () => {
   const router = useRouter()
   const [items, setItems] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const getItems = async () => {
       try {
+        setIsLoading(true)
         let res = await api.get("/dragon")
         let resArray = arraySort(res.data)
         setItems(resArray)
@@ -20,6 +22,8 @@ const Home = () => {
         if (error.response) {
           console.error("error.response: ", error.response)
         }
+      } finally {
+        setIsLoading(false)
       }
     }
     getItems()
@@ -36,6 +40,10 @@ const Home = () => {
     router.push("/add")
   }
 
+  const handleDelete = id => {
+    setItems([...items.filter(item => item.id !== id)])
+  }
+
   return (
     <HomeContainer>
       <TitleWrapper>
@@ -44,21 +52,33 @@ const Home = () => {
           Add Dragon
         </Button>
       </TitleWrapper>
-      <ItemArea>
-        {items.map(item => {
-          return <ItemSingle key={item.id} data={item} />
-        })}
-      </ItemArea>
+      {isLoading ? (
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
+      ) : (
+        <ItemArea>
+          {items.map(item => {
+            return (
+              <ItemSingle
+                key={item.id}
+                data={item}
+                onHandleDelete={handleDelete}
+              />
+            )
+          })}
+        </ItemArea>
+      )}
     </HomeContainer>
   )
 }
 
-export const HomeContainer = styled.div`
+const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 32px;
 `
-export const TitleWrapper = styled.div`
+const TitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -70,8 +90,8 @@ export const TitleWrapper = styled.div`
     margin-top: 0;
   }
 `
-export const Title = styled.h1`
-  font-family: Montserrat;
+const Title = styled.h1`
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
   font-size: 40px;
@@ -84,13 +104,13 @@ export const Title = styled.h1`
     font-size: 58px;
   }
 `
-export const Button = styled.button`
+const Button = styled.button`
   background-color: ${colors.mediumBlack};
   color: ${colors.white};
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   height: 40px;
   padding: 8px 16px;
@@ -99,7 +119,7 @@ export const Button = styled.button`
     width: 100%;
   }
 `
-export const ItemArea = styled.div`
+const ItemArea = styled.div`
   display: flex;
   flex-flow: row wrap;
   margin-top: 32px;
@@ -108,6 +128,14 @@ export const ItemArea = styled.div`
   @media (max-width: 768px) {
     flex-flow: column nowrap;
   }
+`
+
+const SpinnerWrapper = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
 `
 
 export default Home

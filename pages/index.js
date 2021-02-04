@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import styled from "styled-components";
-import { colors } from "../utils/colors";
-import { LoginData } from "../utils/mockedLogin";
+import React, { useState, useEffect } from "react"
+import Head from "next/head"
+import { useRouter } from "next/router"
+import styled from "styled-components"
+import { colors } from "../utils/colors"
+import { LoginData } from "../utils/mockedLogin"
 const Login = () => {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-  const handleEmail = (event) => {
-    const email = event.target.value;
-    setEmail(email);
-  };
+  const handleEmail = event => {
+    const email = event.target.value
+    setEmail(email)
+  }
 
-  const handlePassword = (event) => {
-    const password = event.target.value;
-    setPassword(password);
-  };
+  const handlePassword = event => {
+    const password = event.target.value
+    setPassword(password)
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(event, email, password);
+  const handleSubmit = event => {
+    event.preventDefault()
     if (email === LoginData.email && password === LoginData.password) {
       router.push({
         pathname: "/main",
-      });
+      })
     } else {
-      alert("INVALID DATA");
+      alert("INVALID DATA")
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -61,15 +60,15 @@ const Login = () => {
         </Form>
       </LoginContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
 export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-`;
+`
 
 export const LoginContainer = styled.div`
   border: 1px solid #212121;
@@ -77,7 +76,7 @@ export const LoginContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
+`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -85,7 +84,7 @@ export const Form = styled.form`
   justify-content: center;
   width: 100%;
   padding-top: 24px;
-`;
+`
 
 export const Label = styled.label`
   font-family: "Open Sans";
@@ -96,7 +95,7 @@ export const Label = styled.label`
   color: ${colors.mediumBlack};
   margin-left: 32px;
   margin-bottom: 4px;
-`;
+`
 export const FormInput = styled.input`
   font-family: "Open Sans";
   font-style: normal;
@@ -109,7 +108,7 @@ export const FormInput = styled.input`
   padding-left: 8px;
   margin-right: 32px;
   margin-bottom: 32px;
-`;
+`
 
 export const FormButton = styled.button`
   background-color: ${colors.mediumBlack};
@@ -127,6 +126,6 @@ export const FormButton = styled.button`
   margin-left: 32px;
   margin-right: 32px;
   margin-bottom: 40px;
-`;
+`
 
-export default Login;
+export default Login
